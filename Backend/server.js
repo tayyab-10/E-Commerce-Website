@@ -1,6 +1,6 @@
 const connectToMongo = require('./db');
 const express = require('express');
-
+const errorMiddleware=require("./Middleware/Error");
 
 const dotenv=require("dotenv");
 
@@ -17,6 +17,9 @@ app.use(express.json());
 
 app.use('/api/product', require('./Routes/ProductRoute'));
 
+
+//Middleware for error
+app.use(errorMiddleware);
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
