@@ -1,10 +1,11 @@
 const connectToMongo = require('./db');
 const express = require('express');
 const errorMiddleware=require("./Middleware/Error");
-
+const cookieparser=require("cookie-parser")
 const dotenv=require("dotenv");
 
 connectToMongo();
+
 const app = express();
 
 //Handling Uncaught error     This error is useful for shutting down the server because of some undefined variables e.g if i write clg youtube somthing it will throw the define eror and shut down the server
@@ -20,10 +21,12 @@ const port=process.env.PORT;
 
 //middleware to send and receive json type data
 app.use(express.json());
-
+app.use(cookieparser());
 //Available Routes 
 
 app.use('/api/product', require('./Routes/ProductRoute'));
+
+app.use('/api/auth', require("./Routes/UserRoute"));
 
 
 //Middleware for error

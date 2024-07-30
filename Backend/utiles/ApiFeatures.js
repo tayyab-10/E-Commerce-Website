@@ -13,9 +13,9 @@ class ApiFeatures {
         } : {};
         
         // console.log("Keyword:", keyword); // Debugging log
-        this.query = this.query.find({ ...keyword });
+        this.query = this.query.find({ ...keyword });   //this.query is Product.Find() method
         return this;
-    };
+    }; 
 
     filter(){
         const querycopy={...this.querystr}  //if we write only this.querystr then it changes the object beacuase it is passing by reference
@@ -25,7 +25,7 @@ class ApiFeatures {
         removeFields.forEach(key =>delete querycopy[key]);
 
 
-        //Filter for price and rating
+        //Filter for price and rating 
 
         let querystr = JSON.stringify(querycopy);
         querystr = querystr.replace(/\b(gt|gte|lt|lte)\b/g, (key) => `$${key}`);
