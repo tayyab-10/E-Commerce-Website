@@ -3,6 +3,8 @@ const validator = require("validator");
 const bcrypt=require("bcryptjs")
 const Jwt=require("jsonwebtoken")
 const crypto=require("crypto")
+
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -45,7 +47,7 @@ const userSchema = new mongoose.Schema({
   resetPasswordExpire: Date,
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function(next) {   //userSchema.pre("save", ...) registers a middleware function to run before the document is saved
   if (!this.isModified("password")) { // if password is not modified
     next();
   }
@@ -63,7 +65,7 @@ userSchema.methods.getJWTToken=function(){
 }
 
 userSchema.methods.getResetPassword=function(){
-   //Generating Token  
+   //Generating Token  we are using crypto to generate a new token 
   const resettoken=crypto.randomBytes(20).toString("hex");
   
   // hashing and adding reset Passwordtoken to userschema
@@ -72,8 +74,9 @@ userSchema.methods.getResetPassword=function(){
 
   this.resetPasswordExpire=Date.now()+15 *60*1000;
 
-  return resettoken;
+  return resettoken;  //because I have to send a plain token to the user
 
 }
+
 
 module.exports = mongoose.model("User", userSchema);
