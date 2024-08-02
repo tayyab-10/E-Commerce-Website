@@ -64,19 +64,19 @@ userSchema.methods.getJWTToken=function(){
   })
 }
 
-userSchema.methods.getResetPassword=function(){
-   //Generating Token  we are using crypto to generate a new token 
-  const resettoken=crypto.randomBytes(20).toString("hex");
-  
-  // hashing and adding reset Passwordtoken to userschema
+userSchema.methods.getResetPasswordToken = function() {
+  // Generate a token using crypto
+  const resetToken = crypto.randomBytes(20).toString("hex");
 
-  this.resetPasswordExpire=crypto.createHash("sha256").update(resettoken).digest("hex");
+  // Hash the token and set it to `resetPasswordToken` field in the user schema
+  this.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
 
-  this.resetPasswordExpire=Date.now()+15 *60*1000;
+  // Set the token expiry time to 15 minutes from now
+  this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
 
-  return resettoken;  //because I have to send a plain token to the user
-
-}
+  // Return the plain reset token
+  return resetToken;
+};
 
 
 module.exports = mongoose.model("User", userSchema);
