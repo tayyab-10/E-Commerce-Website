@@ -29,9 +29,9 @@ const Home = () => {
 
        <h2 className="items-center justify-center text-center ">Featured Products</h2>
 
-       <div>
+       {/* <div>
         <Product product={product}/>
-       </div>
+       </div> */}
     
     </>
   );
