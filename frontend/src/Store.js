@@ -4,10 +4,11 @@ import {thunk} from 'redux-thunk';
 
 import { composeWithDevTools } from "redux-devtools-extension";
 
-import { Productreducer } from "./Reducers/productReducer";
+import { ProductDetailreducer, Productreducer } from "./Reducers/productReducer";
 
 const reducer = combineReducers({
-    product: Productreducer
+    products: Productreducer,
+    productDetails:ProductDetailreducer
 });
 
 let initialState = {};

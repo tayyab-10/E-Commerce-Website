@@ -3,6 +3,8 @@ const express = require('express');
 const errorMiddleware=require("./Middleware/Error");
 const cookieparser=require("cookie-parser")
 const dotenv=require("dotenv");
+const cors = require('cors');
+
 
 connectToMongo();
 
@@ -22,6 +24,7 @@ const port=process.env.PORT;
 //middleware to send and receive json type data
 app.use(express.json());
 app.use(cookieparser());
+app.use(cors());
 //Available Routes 
 
 app.use('/api/product', require('./Routes/ProductRoute'));

@@ -19,17 +19,17 @@ exports.createProduct=catchAsyncError(async(req,res,next)=>{
 
 //Get all Products
 exports.getAllProducts=catchAsyncError(async(req,res)=>{
-    console.log("Query String:", req.query); // Debugging log
-    const resultPerPage=5;
+    const resultPerPage=10;
     const productCount=await Product.countDocuments();
     const apifeatures=new ApiFeatures(Product.find(),req.query).search().filter().pagination(resultPerPage);
     const product=await apifeatures.query;
   
     res.status(200).json({
       success:true,
-      product,
+      product, 
       productCount
     })
+
   })
 
 //Get a single product because a user can find a single product as well as admin
