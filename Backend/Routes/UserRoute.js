@@ -1,11 +1,13 @@
 const express=require("express");
 const { registerUser, loginuser, logout, forgotPassword, resetPassword, GetUserDetails, updatePassword, updateProfile, getUsers, getSingleUser, updateUserRole, deleteUser } = require("../Controllers/UserController");
 const { isAuthenticatedUser, authorizeRoles } = require("../Middleware/auth");
+const upload =require("../Middleware/multer");
 
 const router=express.Router();
 
 
-router.route("/register").post(registerUser);
+router.route("/register").post(upload.single('avatar'),registerUser);
+
 router.route("/login").post(loginuser);
 
 router.route("/logout").get(logout);

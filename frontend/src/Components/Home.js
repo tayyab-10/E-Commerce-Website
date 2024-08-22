@@ -3,9 +3,9 @@ import { CgMouse } from "react-icons/cg";
 import backgroundImage from "../images/cover.png";
 import { getProduct } from "../Actions/productAction";
 import { useSelector, useDispatch } from "react-redux";
-import Product from "./Layout/Product/Product";
-import Loader from "./Layout/Loader/Loader";
+import Loader from "./Loader/Loader";
 import {useAlert} from "react-alert"
+import ProductCard from "./Product/ProductCard";
 const Home = () => {
 
   const alert=useAlert();
@@ -48,7 +48,7 @@ const Home = () => {
 
           <div className="flex flex-wrap justify-center mx-auto my-8 w-[80vw] max-w-full">
             {products  && products.map((product) => (
-                <Product key={product._id} product={product} />
+                <ProductCard key={product._id} product={product} />
               ))}
           </div>
         </>

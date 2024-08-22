@@ -7,9 +7,10 @@ PRODUCT_DETAILS_REQUEST,
 PRODUCT_DETAILS_SUCCESS} from "../Constants/ProductConstant";
 
 const initialState = {
-    products: []
+    product: null,  // Initialize as null to handle non-existent data cases
+    loading: false,
+    error: null,
   };
-
 //GetAll  product reducer
 export const Productreducer = (state = initialState, action) => {
     switch (action.type) {
@@ -24,6 +25,8 @@ export const Productreducer = (state = initialState, action) => {
                 loading: false,
                 products: action.payload.product,       //makeinsure what is getting in the response you should send that in the payload
                 productsCount: action.payload.productCount,
+                resultperpage:action.payload.resultperpage,
+                filteredProductsCount:action.payload.filteredProductsCount
             };
 
             case ALL_PRODUCT_FAIL:
@@ -45,7 +48,7 @@ export const Productreducer = (state = initialState, action) => {
 
 //ProductDetails Reducer
 
-export const ProductDetailreducer = (state = {products:{}}, action) => {
+export const ProductDetailreducer = (state = initialState, action) => {
     switch (action.type) {
         case PRODUCT_DETAILS_REQUEST:
             return {
@@ -56,7 +59,7 @@ export const ProductDetailreducer = (state = {products:{}}, action) => {
         case PRODUCT_DETAILS_SUCCESS:            
             return {
                 loading: false,
-                products: action.payload.product      //makeinsure what is getting in the response you should send that in the payload
+                product: action.payload.product      //makeinsure what is getting in the response you should send that in the payload
             };
 
             case PRODUCT_DETAILS_FAIL:

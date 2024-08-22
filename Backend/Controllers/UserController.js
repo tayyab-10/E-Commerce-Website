@@ -5,23 +5,52 @@ const bcrypt=require("bcryptjs")
 const sendToken=require("../utiles/jwtToken");
 const sendEmail = require("../utiles/email");
 const crypto=require("crypto")
+const cloudinary=require("cloudinary")
+const fs = require('fs');
+const path = require('path');
+
 
 //Register a user
-exports.registerUser=catchAsyncError( async(req,res,next)=>{
+exports.registerUser = catchAsyncError(async (req, res, next) => {
 
-    const {name,email,password}=req.body;
+  if (!req.file) {
+    return res.status(400).json({
+      success: false,
+      message: 'Avatar is required',
+    });
+  }
+  
+  const myCloud = await cloudinary.v2.uploader.upload(req.file.path, {
+    folder: 'avatars',
+    width: 150,
+    crop: 'scale',
+  });
 
-    const user= await User.create({
-         name,email,password,
-        avatar:{
-            public_id:"This is a Sample Id",
-            url: "url"
-        }
 
-    })
+  fs.unlink(req.file.path, (err) => {
+    if (err) {
+        console.error('Error while deleting the file:', err);
+    } else {
+        console.log('File successfully deleted from local directory');
+    }
+});
 
-    sendToken(user,201,res);
-})
+  const { name, email, password } = req.body;
+
+ 
+  const user = await User.create({
+    name,
+    email,
+    password, 
+    avatar: {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    },
+  });
+
+ 
+  sendToken(user, 201, res);
+});
 
 // Login a useris
 exports.loginuser = catchAsyncError(async (req, res, next) => {

@@ -4,9 +4,11 @@ const errorMiddleware=require("./Middleware/Error");
 const cookieparser=require("cookie-parser")
 const dotenv=require("dotenv");
 const cors = require('cors');
+const cloudinary = require('cloudinary').v2;
 
 
 connectToMongo();
+
 
 const app = express();
 
@@ -21,10 +23,21 @@ process.on("uncaughtException",(err)=>{
 dotenv.config({path:"Backend/Config/config.env"});
 const port=process.env.PORT;
 
+cloudinary.config({
+    cloud_name:process.env.CLOUDINARY_NAME,
+    api_key:process.env.CLOUDINARY_API_KEY,
+    api_secret:process.env.CLOUDINARY_API_SECRET_KEY
+})
+
 //middleware to send and receive json type data
 app.use(express.json());
 app.use(cookieparser());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', // frontend URL
+    credentials: true // allow credentials (cookies, authorization headers, etc.)
+  }));
+// app.use(bodyParser.urlencoded({extended:true}));
+// app.use(fileupload());
 //Available Routes 
 
 app.use('/api/product', require('./Routes/ProductRoute'));
