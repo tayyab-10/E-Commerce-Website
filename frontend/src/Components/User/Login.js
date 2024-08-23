@@ -94,7 +94,7 @@ const Login = () => {
                   <Form.Item name="remember" valuePropName="checked" noStyle>
                     <Checkbox>Remember me</Checkbox>
                   </Form.Item>
-                  <Link className="login-form-forgot text-blue-500 hover:underline" to="/signup">
+                  <Link className="login-form-forgot text-blue-500 hover:underline" to="/forgotpassword">
                     Forgot password
                   </Link>
                 </div>

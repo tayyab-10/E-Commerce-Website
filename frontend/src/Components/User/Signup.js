@@ -42,7 +42,7 @@ const Signup = () => {
         if (isAuthenticated) {
           navigate("/account")
         }
-      }, [dispatch, error, alert,isAuthenticated]);
+      }, [dispatch, error, alert,isAuthenticated,navigate]);
     
 
     const onFinish = () => {

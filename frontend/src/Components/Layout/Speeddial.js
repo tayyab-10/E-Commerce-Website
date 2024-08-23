@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
@@ -8,53 +7,75 @@ import { useNavigate } from 'react-router-dom';
 import { useAlert } from 'react-alert';
 import { LogoutUser } from '../../Actions/UserAction';
 import { useDispatch } from 'react-redux';
+import { Backdrop } from '@mui/material';
 
-const Useroptions=({user})=> {
+export default function UserOptions({ user }) {
+  const navigate = useNavigate();
+  const alert = useAlert();
+  const dispatch = useDispatch();
+  const [open, setOpen] = React.useState(false);
+  
+  const options = [
+    { icon: <ListAltRounded />, name: 'Orders', func: orders },
+    { icon: <Person2Rounded />, name: 'Profile', func: profile },
+    { icon: <ExitToAppRounded />, name: 'Logout', func: logout },
+  ];
 
-    const navigate=useNavigate();
-    const alert=useAlert();
-    const dispatch=useDispatch();
+  if (user.role === "admin") {
+    options.unshift({
+      icon: <Dashboard />,
+      name: "Dashboard",
+      func: dashboard,
+    });
+  }
 
-    const options = [
-      { icon: <ListAltRounded />, name: 'Orders',func:orders },
-      { icon: <Person2Rounded />, name: 'Profile' ,func:profile},
-      { icon: <ExitToAppRounded />, name: 'Logout' ,func:logout},
-    ];
+  function dashboard() {
+    navigate("/dashboard");
+  }
 
+  function orders() {
+    navigate("/orders");
+  }
 
-   if (user && user.role === "admin") {
-        options.unshift({
-            icon: <Dashboard />,
-            name: "Dashboard",
-            func: dashboard
-        });
-    }
+  function profile() {
+    navigate("/account");
+  }
 
-   function dashboard(){
-    navigate("/dashboard")
-   }
-
-   function orders(){
-    navigate("/orders")
-   }
-
-   function profile(){
-    navigate("/profile")
-   }
-   
-   function logout(){
+  function logout() {
     dispatch(LogoutUser());
-    alert.success("Logout Successfully")
-    navigate("/login")
-   }
+    alert.success("Logout Successfully");
+  }
 
   return (
-    <Box sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1 }}>
+    <>
+      <Backdrop 
+        open={open} 
+        sx={{ 
+          zIndex: 10, 
+          color: '#fff', 
+          backgroundColor: 'rgba(0, 0, 0, 0.5)' // Adjust backdrop color and opacity
+        }}
+      />
       <SpeedDial
-        ariaLabel="SpeedDial basic example"
-        sx={{ position: 'absolute', bottom: 16, right: 16 }}
+        ariaLabel="User SpeedDial"
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+        sx={{ 
+          position: 'fixed', 
+          top: '3vmax', 
+          right: '3vmax', 
+          zIndex: 11,
+        }}
+        direction="down"
+        open={open}
         icon={
-            user.avatar && user.avatar.url ? <img src={user.avatar.url} alt="User Avatar" /> : <SpeedDialIcon />       
+          user.avatar && user.avatar.url ? 
+            <img 
+              src={user.avatar.url} 
+              alt="User Avatar" 
+              style={{ width: '100%', height: '100%', borderRadius: '50%' }} 
+            /> 
+            : <SpeedDialIcon />
         }
       >
         {options.map((action) => (
@@ -66,8 +87,6 @@ const Useroptions=({user})=> {
           />
         ))}
       </SpeedDial>
-    </Box>
+    </>
   );
 }
-
-export default Useroptions;

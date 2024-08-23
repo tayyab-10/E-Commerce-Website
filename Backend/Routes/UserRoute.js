@@ -20,7 +20,7 @@ router.route("/mydetail").get(isAuthenticatedUser,GetUserDetails);
 
 router.route("/password/updatePassword").put(isAuthenticatedUser,updatePassword);
 
-router.route("/updateProfile").put(isAuthenticatedUser,updateProfile);
+router.route("/updateProfile").put(upload.single('avatar'),isAuthenticatedUser,updateProfile);
 
 router.route("/admin/getUsers").get(isAuthenticatedUser,authorizeRoles("admin"),getUsers);
 

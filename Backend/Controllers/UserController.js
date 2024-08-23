@@ -182,7 +182,7 @@ exports.GetUserDetails=catchAsyncError(async(req,res,next)=>{
 
 // update User password
 exports.updatePassword = catchAsyncError(async (req, res, next) => {
-  const user = await User.findById(req.user.id).select("+password");  //req.user.id == isAuthenticated user ma sy ayi gi 
+  const user = await User.findById(req.user.id).select("+password");
 
   const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
 
@@ -191,7 +191,7 @@ exports.updatePassword = catchAsyncError(async (req, res, next) => {
   }
 
   if (req.body.newPassword !== req.body.confirmPassword) {
-    return next(new ErrorHandler("password does not match", 400));
+    return next(new ErrorHandler("Password does not match", 400));
   }
 
   user.password = req.body.newPassword;
@@ -201,32 +201,40 @@ exports.updatePassword = catchAsyncError(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
-// update User Profile   h
+
+
+// update User Profile  
 exports.updateProfile = catchAsyncError(async (req, res, next) => {
-  const newUserData = {
-    name: req.body.name,
-    email: req.body.email,
-  };
 
-  // if (req.body.avatar !== "") {
-  //   const user = await User.findById(req.user.id);
+  const newUserData = {};
 
-  //   const imageId = user.avatar.public_id;
+  // Only set the fields that are provided in the request body
+  if (req.body.name) newUserData.name = req.body.name;
+  if (req.body.email) newUserData.email = req.body.email;
 
-  //   await cloudinary.v2.uploader.destroy(imageId);
+  // Handle avatar if it's provided
+  if (req.file) {
+    const user = await User.findById(req.user.id);
 
-  //   const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-  //     folder: "avatars",
-  //     width: 150,
-  //     crop: "scale",
-  //   });
+    if (user.avatar && user.avatar.public_id) {
+      // Delete old avatar from cloudinary
+      await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+    }
 
-  //   newUserData.avatar = {
-  //     public_id: myCloud.public_id,
-  //     url: myCloud.secure_url,
-  //   };
-  // }
+    // Upload new avatar
+    const myCloud = await cloudinary.v2.uploader.upload(req.file.path, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
 
+    newUserData.avatar = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
+  }
+
+  // Update the user with the new data
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
     runValidators: true,
@@ -235,6 +243,7 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
+    user,
   });
 });
   
