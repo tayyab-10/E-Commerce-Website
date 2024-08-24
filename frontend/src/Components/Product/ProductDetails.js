@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -9,6 +9,7 @@ import ReviewCard from '../ReviewCard';
 import Loader from '../Loader/Loader';
 import { useAlert } from 'react-alert';
 import MetaData from '../Layout/MetaData';
+import { addItemsToCart } from '../../Actions/cartAction';
 
 
 const ProductDetails = () => {
@@ -16,8 +17,28 @@ const ProductDetails = () => {
   const { id } = useParams();
   const alert=useAlert();
 
-  const { loading, error, product } = useSelector((state) => state.productDetails);
 
+  const { loading, error, product } = useSelector((state) => state.productDetails);
+  
+  const [quantity, setquantity] = useState(1)
+
+  const increasequantity=()=>{
+    if(product.Stock <=quantity) return;
+      const qty=quantity+1;
+      setquantity(qty);
+  }
+ 
+  const decreasequantity=()=>{
+    const qty=quantity-1;
+    if(quantity > 1)
+    setquantity(qty);
+}
+
+
+const addToCartHandler=()=>{
+  dispatch(addItemsToCart(id,quantity))
+  alert.success("Item Added to the Cart Successfully!!")
+}
   useEffect(() => {
     if(error){
       alert.error(error)
@@ -65,23 +86,23 @@ const ProductDetails = () => {
                 <h1 className="text-[rgba(17,17,17,0.795)] font-normal text-[1.8vmax] mt-[1vmax] mb-[1vmax]">{`$${product.price}`}</h1>
                 <div className="flex items-center mb-[1vmax]">
                   <div className="flex items-center">
-                    <button className="border-none bg-[rgba(0,0,0,0.616)] p-[0.5vmax] cursor-pointer text-white transition-all duration-500 hover:bg-[rgba(0,0,0,0.767)]">
+                    <button onClick={decreasequantity} className="border-none bg-[rgba(0,0,0,0.616)] p-[0.5vmax] cursor-pointer text-white transition-all duration-500 hover:bg-[rgba(0,0,0,0.767)]">
                       -
                     </button>
                     <input
                        readOnly
-                       value="1"
+                       value={quantity}
                        type="number"
-                       className="border-none p-[0.6vmax] w-[3vmax] text-center outline-none font-normal text-[1.5vmax] text-[rgba(0,0,0,0.74)]"
+                       className="border-none p-[0.6vmax] w-[4vmax] text-center outline-none font-normal text-[1.5vmax] text-[rgba(0,0,0,0.74)]"
                     />
 
-                    <button className="border-none bg-[rgba(0,0,0,0.616)] p-[0.5vmax] cursor-pointer text-white transition-all duration-500 hover:bg-[rgba(0,0,0,0.767)]">
+                    <button onClick={increasequantity} className="border-none bg-[rgba(0,0,0,0.616)] p-[0.5vmax] cursor-pointer text-white transition-all duration-500 hover:bg-[rgba(0,0,0,0.767)]">
                       +
                     </button>
                   </div>
                   <button
                     disabled={product.Stock < 1 ? true : false}
-                    
+                    onClick={addToCartHandler}
                     className={`ml-[2vmax] bg-red-500 border-none cursor-pointer text-white transition-all duration-500 bg-tomato font-medium text-xs rounded-[20px] hover:bg-[rgb(185,64,42)] p-[0.5vmax_2vmax] outline-none}`}
                   >
                     Add to Cart

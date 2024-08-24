@@ -1,23 +1,37 @@
 import { legacy_createStore as createStore, combineReducers, applyMiddleware } from "redux";
-
-import {thunk} from 'redux-thunk'; 
-
+import {thunk} from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-
 import { ProductDetailreducer, Productreducer } from "./Reducers/productReducer";
 import { forgotPasswordReducer, ProfileReducer, userReducer } from "./Reducers/UserReducer";
+import { cartReducer } from "./Reducers/cartReducer";
 
 const reducer = combineReducers({
     products: Productreducer,
-    productDetails:ProductDetailreducer,
-    User:userReducer,
-    profile:ProfileReducer,
-    forgotpassword:forgotPasswordReducer
+    productDetails: ProductDetailreducer,
+    User: userReducer,
+    profile: ProfileReducer,
+    forgotpassword: forgotPasswordReducer,
+    cart: cartReducer
 });
 
-let initialState = {};
+// Safe parsing function
+function safeJsonParse(item) {   // if your cart is empty then it will be undefined and the JSON could not parse undefined
+    try {
+        return JSON.parse(item);
+    } catch (e) {
+        return [];
+    }
+}
 
-const middleware = [thunk]; 
+let initialState = {
+    cart: {
+        cartItems: localStorage.getItem("cartItems")
+            ? safeJsonParse(localStorage.getItem("cartItems"))
+            : []
+    }
+};
+
+const middleware = [thunk];
 
 const store = createStore(
     reducer,

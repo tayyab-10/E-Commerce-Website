@@ -9,7 +9,6 @@ import { MailOutlineOutlined } from "@mui/icons-material";
 const ForgotPassword = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
-  
 
   const { error, message, loading } = useSelector(
     (state) => state.forgotpassword

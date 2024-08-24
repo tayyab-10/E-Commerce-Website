@@ -2,11 +2,11 @@ import * as React from 'react';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
-import { Dashboard, ExitToAppRounded, ListAltRounded, Person2Rounded } from '@mui/icons-material';
+import { Dashboard, ExitToAppRounded, ListAltRounded, Person2Rounded, ShoppingCart } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAlert } from 'react-alert';
 import { LogoutUser } from '../../Actions/UserAction';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { Backdrop } from '@mui/material';
 
 export default function UserOptions({ user }) {
@@ -14,10 +14,13 @@ export default function UserOptions({ user }) {
   const alert = useAlert();
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
+
+  const {cartItems}=useSelector((state)=> state.cart);
   
   const options = [
     { icon: <ListAltRounded />, name: 'Orders', func: orders },
     { icon: <Person2Rounded />, name: 'Profile', func: profile },
+    { icon: <ShoppingCart style={{color:cartItems.length>0 ? "red" : "unset"}} />, name: `cart(${cartItems.length})`, func: Cart },
     { icon: <ExitToAppRounded />, name: 'Logout', func: logout },
   ];
 
@@ -40,7 +43,10 @@ export default function UserOptions({ user }) {
   function profile() {
     navigate("/account");
   }
-
+ 
+  function Cart(){
+    navigate("/Cart")
+  }
   function logout() {
     dispatch(LogoutUser());
     alert.success("Logout Successfully");
@@ -84,6 +90,7 @@ export default function UserOptions({ user }) {
             icon={action.icon}
             tooltipTitle={action.name}
             onClick={action.func}
+            tooltipOpen={window.innerWidth <=600 ? true : false}
           />
         ))}
       </SpeedDial>
