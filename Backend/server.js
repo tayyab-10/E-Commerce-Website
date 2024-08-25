@@ -46,6 +46,7 @@ app.use('/api/auth', require("./Routes/UserRoute"));
 
 app.use('/api/order', require("./Routes/OrderRoute"));
 
+app.use('/api/payment', require("./Routes/paymentRoute"));
 
 //Middleware for error
 app.use(errorMiddleware);

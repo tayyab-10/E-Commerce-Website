@@ -13,16 +13,21 @@ const Login = () => {
   const alert = useAlert();
   const navigate = useNavigate();
 
-
-  
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.User
   );
- 
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  
+  const [redirect, setRedirect] = useState("/account");
+
+  // Extract redirect path from URL query parameters
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const redirectPath = params.get('redirect') || "/account";
+    setRedirect(redirectPath);
+  }, []);
+
   useEffect(() => {
     if (error) {
       alert.error(error);
@@ -30,9 +35,9 @@ const Login = () => {
     }
 
     if (isAuthenticated) {
-      navigate("/account");
+      navigate(redirect);
     }
-  }, [dispatch, error, alert, navigate, isAuthenticated]);
+  }, [dispatch, error, alert, navigate, isAuthenticated, redirect]);
 
   const handleLogin = () => {
     dispatch(LoginUser(loginEmail, loginPassword));

@@ -4,6 +4,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { ProductDetailreducer, Productreducer } from "./Reducers/productReducer";
 import { forgotPasswordReducer, ProfileReducer, userReducer } from "./Reducers/UserReducer";
 import { cartReducer } from "./Reducers/cartReducer";
+import { myOrdersReducer, newOrderReducer} from "./Reducers/orderReducer";
 
 const reducer = combineReducers({
     products: Productreducer,
@@ -11,7 +12,9 @@ const reducer = combineReducers({
     User: userReducer,
     profile: ProfileReducer,
     forgotpassword: forgotPasswordReducer,
-    cart: cartReducer
+    cart: cartReducer,
+    newOrder:newOrderReducer,
+    myorders:myOrdersReducer
 });
 
 // Safe parsing function
@@ -27,8 +30,13 @@ let initialState = {
     cart: {
         cartItems: localStorage.getItem("cartItems")
             ? safeJsonParse(localStorage.getItem("cartItems"))
-            : []
-    }
+            : [],
+        shippingInfo:{
+                shippingInfo: localStorage.getItem("shippingInfo")
+                ? safeJsonParse(localStorage.getItem("shippingInfo"))
+                : []
+            }
+    },
 };
 
 const middleware = [thunk];
