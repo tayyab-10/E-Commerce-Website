@@ -2,6 +2,9 @@ import { ALL_PRODUCT_FAIL,
      ALL_PRODUCT_REQUEST, 
      ALL_PRODUCT_SUCCESS,
       CLEAR_ERRORS,
+    NEW_REVIEW_FAIL,
+    NEW_REVIEW_REQUEST,
+    NEW_REVIEW_SUCCESS,
     PRODUCT_DETAILS_FAIL,
 PRODUCT_DETAILS_REQUEST,
 PRODUCT_DETAILS_SUCCESS} from "../Constants/ProductConstant";
@@ -63,6 +66,38 @@ export const ProductDetailreducer = (state = initialState, action) => {
             };
 
             case PRODUCT_DETAILS_FAIL:
+                return {
+                  loading: false,
+                  error: action.payload,
+                };
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null,
+            };
+
+        default:
+            return state;
+    }
+};
+
+
+export const addReviewReducer = (state = {}, action) => {
+    switch (action.type) {
+        case NEW_REVIEW_REQUEST:
+            return {
+                loading: true,
+                ...state
+            };
+
+        case NEW_REVIEW_SUCCESS:            
+            return {
+                loading: false,
+                success: action.payload      //makeinsure what is getting in the response you should send that in the payload
+            };
+
+            case NEW_REVIEW_FAIL:
                 return {
                   loading: false,
                   error: action.payload,

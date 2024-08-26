@@ -123,8 +123,10 @@ import {
   export const getOrderDetails = (id) => async (dispatch) => {
     try {
       dispatch({ type: ORDER_DETAILS_REQUEST });
-  
-      const { data } = await axios.get(`/api/v1/order/${id}`);
+      const config={
+        withCredentials: true,
+      }
+      const { data } = await axios.get(`http://localhost:4000/api/order/singleOrder/${id}`,config);
   
       dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data.order });
     } catch (error) {

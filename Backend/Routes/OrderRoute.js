@@ -7,7 +7,7 @@ const router=express.Router();
 
 router.route("/neworder").post(isAuthenticatedUser,newOrder);
 
-router.route("/singleOrder").get(isAuthenticatedUser,getSingleOrder);
+router.route("/singleOrder/:id").get(isAuthenticatedUser,getSingleOrder);
 
 router.route("/getallOrders").get(isAuthenticatedUser,myOrders);
 

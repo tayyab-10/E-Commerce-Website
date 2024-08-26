@@ -95,8 +95,12 @@ const Payment = () => {
         payBtn.current.disabled = false;
         alert.error(result.error.message);
       } else if (result.paymentIntent.status === "succeeded") {
-           
-          //  navigate("/success");
+           order.paymentInfo={
+            id:result.paymentIntent.id,
+            status:result.paymentIntent.status
+           }
+           dispatch(createOrder(order))
+           navigate("/success");
 
       } else {
         alert.error("There's some issue while processing payment");
@@ -113,12 +117,6 @@ const Payment = () => {
     if(error){
       alert.error(error.message)
       dispatch(clearErrors())
-    }else{
-      order.paymentInfo={
-        id:"12",
-        status:"successd"
-       }
-       dispatch(createOrder(order))
     }
   }, [dispatch, alert,error]);
 

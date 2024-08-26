@@ -1,5 +1,5 @@
 import axiosInstance from '../AxiosInstance';
-import { ALL_PRODUCT_FAIL, ALL_PRODUCT_REQUEST, ALL_PRODUCT_SUCCESS, CLEAR_ERRORS, PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS } from '../Constants/ProductConstant';
+import { ALL_PRODUCT_FAIL, ALL_PRODUCT_REQUEST, ALL_PRODUCT_SUCCESS, CLEAR_ERRORS, NEW_REVIEW_FAIL, NEW_REVIEW_REQUEST, NEW_REVIEW_SUCCESS, PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS } from '../Constants/ProductConstant';
 
 export const getProduct = (keyword = '',currentpage=1,price=[0,25000],category,ratings=0) => async (dispatch) => {
   try {
@@ -40,7 +40,34 @@ export const getProductDetail = (id) => async (dispatch) => {
    
   } catch (error) {
     dispatch({
-      type: PRODUCT_DETAILS_FAIL,
+      type: PRODUCT_DETAILS_REQUEST,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const AddReview = (reviewdata) => async (dispatch) => {
+  try {
+    dispatch({ type: NEW_REVIEW_REQUEST });
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    };
+
+    const { data } = await axiosInstance.post("/review",reviewdata,config);
+
+    
+    dispatch({
+      type: NEW_REVIEW_SUCCESS,
+      payload: data
+    });
+   
+   
+  } catch (error) {
+    dispatch({
+      type: NEW_REVIEW_FAIL,
       payload: error.response.data.message,
     });
   }

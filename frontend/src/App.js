@@ -29,6 +29,8 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Payment from './Components/payment/payment';
 import OrderSuccess from './Components/Cart/OrderSuccess';
+import MyOrders from './Components/Order/myOrders';
+import OrderDetails from './Components/Order/orderDetails';
 
 function App() {
   const { isAuthenticated, user, loading } = useSelector((state) => state.User);
@@ -93,6 +95,18 @@ function App() {
 
         <Route element={<ProtectedRoute />}>
           <Route path='/success' element={<OrderSuccess />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/orders' element={<MyOrders />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/orders' element={<MyOrders />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/order/:id' element={<OrderDetails />} />
         </Route>
 
       </Routes>

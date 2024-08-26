@@ -1,10 +1,10 @@
 import { legacy_createStore as createStore, combineReducers, applyMiddleware } from "redux";
 import {thunk} from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { ProductDetailreducer, Productreducer } from "./Reducers/productReducer";
+import { addReviewReducer, ProductDetailreducer, Productreducer } from "./Reducers/productReducer";
 import { forgotPasswordReducer, ProfileReducer, userReducer } from "./Reducers/UserReducer";
 import { cartReducer } from "./Reducers/cartReducer";
-import { myOrdersReducer, newOrderReducer} from "./Reducers/orderReducer";
+import { myOrdersReducer, newOrderReducer, orderDetailsReducer} from "./Reducers/orderReducer";
 
 const reducer = combineReducers({
     products: Productreducer,
@@ -14,7 +14,9 @@ const reducer = combineReducers({
     forgotpassword: forgotPasswordReducer,
     cart: cartReducer,
     newOrder:newOrderReducer,
-    myorders:myOrdersReducer
+    myorders:myOrdersReducer,
+    orderDetails:orderDetailsReducer,
+    addReview:addReviewReducer
 });
 
 // Safe parsing function
