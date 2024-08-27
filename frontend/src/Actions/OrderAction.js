@@ -91,9 +91,10 @@ import {
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials:true,
       };
       const { data } = await axios.put(
-        `/api/v1/admin/order/${id}`,
+        `http://localhost:4000/api/order/admin/updateOrder/${id}`,
         order,
         config
       );
@@ -112,8 +113,10 @@ import {
     try {
       dispatch({ type: DELETE_ORDER_REQUEST });
   
-      const { data } = await axios.delete(`/api/v1/admin/order/${id}`);
-  
+      const config={
+        withCredentials:true
+      }
+      const { data } = await axios.delete(`http://localhost:4000/api/order/admin/deleteorder/${id}`,config);
       dispatch({ type: DELETE_ORDER_SUCCESS, payload: data.success });
     } catch (error) {
       dispatch({

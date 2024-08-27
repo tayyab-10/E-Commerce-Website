@@ -16,9 +16,11 @@ Chart.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement
 const Dashboard = () => {
   const dispatch = useDispatch();
 
-  const { products = [] } = useSelector((state) => state.products || {});
+  const { products = [] } = useSelector((state) => state.adminproduct);
   const { orders = [] } = useSelector((state) => state.allOrders || {});
   const { users = [] } = useSelector((state) => state.allUsers || {});
+
+  console.log("The Users data are",users);
 
   let outOfStock = 0;
 
@@ -59,7 +61,7 @@ const Dashboard = () => {
       {
         backgroundColor: ["#00A6B4", "#6800B4"],
         hoverBackgroundColor: ["#4B5000", "#35014F"],
-        data: [2,10],  //temp needs to change but some error here 
+        data: [outOfStock, products.length - outOfStock],  //temp needs to change but some error here 
       },
     ],
   };
@@ -79,7 +81,7 @@ const Dashboard = () => {
         <div className="my-8">
           <div className="flex justify-center bg-white">
             <p className="bg-[rgba(70,117,218,0.932)] text-white font-light text-[1.3rem] text-center p-6 w-full mx-8 md:mx-2">
-              Total Amount <br /> ₹{totalAmount}
+              Total Amount <br /> ${totalAmount}
             </p>
           </div>
         </div>
@@ -87,7 +89,7 @@ const Dashboard = () => {
         <div className="flex justify-center">
           <Link
             to="/admin/products"
-            className="bg-[rgb(255,110,110)] text-white font-light text-2xl md:text-[2rem] text-center bg-yellow-400 no-underline p-6 w-[10vmax] h-[10vmax] m-8 md:m-2 rounded-full flex justify-center items-center flex-col"
+            className="text-white font-light text-2xl md:text-[2rem] text-center bg-yellow-400 no-underline p-6 w-[10vmax] h-[10vmax] m-8 md:m-2 rounded-full flex justify-center items-center flex-col"
           >
             Product
             <br />

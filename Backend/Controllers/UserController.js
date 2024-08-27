@@ -250,15 +250,15 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
 
 exports.getUsers=catchAsyncError(async(req,res,next) =>{
 
-  const user=await User.find();
+  const users=await User.find();
 
-  if(!user){
+  if(!users){
     return next(new ErrorHandler("There are no Registered Users",400))
   }
 
   res.status(200).json({
     success:true,
-    user
+    users
   })
 })
 

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useSelector, useDispatch } from "react-redux";
-import { clearError, getAdminProduct } from "../../Actions/productAction";
 import { Link, useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { Button } from "@material-ui/core";
@@ -9,65 +8,75 @@ import MetaData from "../Layout/MetaData";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SideBar from "./Sidebar";
-import { DELETE_PRODUCT_RESET } from "../../Constants/ProductConstant";
-import { deleteProduct } from "../../Actions/AdminAction";
+import {
+  deleteOrder,
+  getAllOrders,
+  clearErrors,
+} from "../../Actions/OrderAction";
+import { DELETE_ORDER_RESET } from "../../Constants/OrderConstants";
 
-const ProductList = () => {
+const OrderList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const alert = useAlert();
 
-  const { error, products } = useSelector((state) => state.adminproduct);
-  const { error: deleteError, isDeleted } = useSelector(
-    (state) => state.updatedeleteproduct
-  );
+  const { error, orders } = useSelector((state) => state.allOrders);
+  const { user } = useSelector((state) => state.User);
 
-  const deleteProductHandler = (id) => {
-    dispatch(deleteProduct(id));
+  const { error: deleteError, isDeleted } = useSelector((state) => state.order);
+
+  const deleteOrderHandler = (id) => {
+    dispatch(deleteOrder(id));
   };
 
   useEffect(() => {
     if (error) {
       alert.error(error);
-      dispatch(clearError());
+      dispatch(clearErrors());
     }
 
     if (deleteError) {
       alert.error(deleteError);
-      dispatch(clearError());
+      dispatch(clearErrors());
     }
 
     if (isDeleted) {
-      alert.success("Product Deleted Successfully");
-      navigate("/admin/products");
-      dispatch({ type: DELETE_PRODUCT_RESET });
+      alert.success("Order Deleted Successfully");
+      navigate("/admin/orders");
+      dispatch({ type: DELETE_ORDER_RESET });
     }
 
-    dispatch(getAdminProduct());
-  }, [dispatch, alert, error, deleteError, isDeleted, navigate]);
+    dispatch(getAllOrders());
+  }, [dispatch, alert, error, deleteError, navigate, isDeleted]);
 
   const columns = [
-    { field: "id", headerName: "Product ID", minWidth: 200, flex: 0.5 },
+    { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
+
     {
-      field: "name",
-      headerName: "Name",
-      minWidth: 350,
-      flex: 1,
+      field: "status",
+      headerName: "Status",
+      minWidth: 150,
+      flex: 0.5,
+      cellClassName: (params) => {
+        return params.row.status === "Delivered" ? "text-green-500" : "text-red-500";
+      },
     },
     {
-      field: "stock",
-      headerName: "Stock",
+      field: "itemsQty",
+      headerName: "Items Qty",
       type: "number",
       minWidth: 150,
-      flex: 0.3,
+      flex: 0.4,
     },
+
     {
-      field: "price",
-      headerName: "Price",
+      field: "amount",
+      headerName: "Amount",
       type: "number",
       minWidth: 270,
       flex: 0.5,
     },
+
     {
       field: "actions",
       flex: 0.3,
@@ -78,11 +87,11 @@ const ProductList = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={`/admin/product/${params.row.id}`}>
+            <Link to={`/admin/order/${params.row.id}`}>
               <EditIcon />
             </Link>
 
-            <Button onClick={() => deleteProductHandler(params.row.id)}>
+            <Button onClick={() => deleteOrderHandler(params.row.id)}>
               <DeleteIcon />
             </Button>
           </>
@@ -93,25 +102,25 @@ const ProductList = () => {
 
   const rows = [];
 
-  products &&
-    products.forEach((item) => {
+  orders &&
+    orders.forEach((item) => {
       rows.push({
         id: item._id,
-        stock: item.Stock,
-        price: item.price,
-        name: item.name,
+        itemsQty: item.orderItems.length,
+        amount: item.totalPrice,
+        status: item.orderStatus,
       });
     });
 
   return (
     <>
-      <MetaData title={`ALL PRODUCTS - Admin`} />
+      <MetaData title={`ALL ORDERS - ${user.name}`} />
 
       <div className="flex w-full">
         <SideBar />
         <div className="w-full box-border bg-white border-l border-black/20 flex flex-col h-screen">
           <h1 className="font-roboto font-normal text-2xl p-[0.5vmax] box-border text-black/70 transition-all duration-500 my-8 text-center">
-            ALL PRODUCTS
+            ALL ORDERS
           </h1>
 
           <DataGrid
@@ -128,4 +137,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default OrderList;

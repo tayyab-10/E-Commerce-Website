@@ -127,7 +127,8 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
       return next(new ErrorHander("Order not found with this Id", 404));
     }
   
-    await order.remove();
+   // Use the model's deleteOne method
+  await Order.deleteOne({ _id: req.params.id });
   
     res.status(200).json({
       success: true,

@@ -54,18 +54,21 @@ export const Productreducer = (state = initialState, action) => {
 export const ProductDetailreducer = (state = initialState, action) => {
     switch (action.type) {
         case PRODUCT_DETAILS_REQUEST:
+            console.log("Prodcut_DEtailas request")
             return {
                 loading: true,
                 products: [],
             };
 
         case PRODUCT_DETAILS_SUCCESS:            
+        console.log("Product Details Success")
             return {
                 loading: false,
                 product: action.payload.product      //makeinsure what is getting in the response you should send that in the payload
             };
 
             case PRODUCT_DETAILS_FAIL:
+                console.log("product Details fails")
                 return {
                   loading: false,
                   error: action.payload,

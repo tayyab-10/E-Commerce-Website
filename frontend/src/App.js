@@ -33,6 +33,10 @@ import MyOrders from './Components/Order/myOrders';
 import OrderDetails from './Components/Order/orderDetails';
 import Dashboard from './Components/Admin/Dashboard';
 import ProductList from './Components/Admin/ProductList';
+import NewProduct from './Components/Admin/NewProduct';
+import UpdateProduct from './Components/Admin/UpdateProduct';
+import OrderList from './Components/Admin/OrderList';
+import UpdateOrder from './Components/Admin/UpdateOrder';
 
 function App() {
   const { isAuthenticated, user, loading } = useSelector((state) => state.User);
@@ -119,6 +123,21 @@ function App() {
           <Route path='/admin/products' element={<ProductList />} />
         </Route>
 
+        <Route element={<ProtectedRoute />}>
+          <Route path='/admin/newProduct' element={<NewProduct />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/admin/product/:id' element={<UpdateProduct />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/admin/orders' element={<OrderList />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/admin/order/:id' element={<UpdateOrder />} />
+        </Route>
 
       </Routes>
       {stripeApiKey && (
