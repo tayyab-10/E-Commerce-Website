@@ -31,6 +31,8 @@ import Payment from './Components/payment/payment';
 import OrderSuccess from './Components/Cart/OrderSuccess';
 import MyOrders from './Components/Order/myOrders';
 import OrderDetails from './Components/Order/orderDetails';
+import Dashboard from './Components/Admin/Dashboard';
+import ProductList from './Components/Admin/ProductList';
 
 function App() {
   const { isAuthenticated, user, loading } = useSelector((state) => state.User);
@@ -101,13 +103,22 @@ function App() {
           <Route path='/orders' element={<MyOrders />} />
         </Route>
 
-        <Route element={<ProtectedRoute />}>
+        <Route element={<ProtectedRoute isAdmin={true} />}>
           <Route path='/orders' element={<MyOrders />} />
         </Route>
 
         <Route element={<ProtectedRoute />}>
           <Route path='/order/:id' element={<OrderDetails />} />
         </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/admin/dashboard' element={<Dashboard />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/admin/products' element={<ProductList />} />
+        </Route>
+
 
       </Routes>
       {stripeApiKey && (

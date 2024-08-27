@@ -1,4 +1,4 @@
-import { ALL_PRODUCT_FAIL,
+import {ALL_PRODUCT_FAIL,
      ALL_PRODUCT_REQUEST, 
      ALL_PRODUCT_SUCCESS,
       CLEAR_ERRORS,
@@ -31,7 +31,7 @@ export const Productreducer = (state = initialState, action) => {
                 resultperpage:action.payload.resultperpage,
                 filteredProductsCount:action.payload.filteredProductsCount
             };
-
+       
             case ALL_PRODUCT_FAIL:
                 return {
                   loading: false,

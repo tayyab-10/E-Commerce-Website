@@ -66,8 +66,12 @@ import {
   export const getAllOrders = () => async (dispatch) => {
     try {
       dispatch({ type: ALL_ORDERS_REQUEST });
+
+      const config={
+        withCredentials:true
+      }
   
-      const { data } = await axios.get("/api/v1/admin/orders");
+      const { data } = await axios.get("http://localhost:4000/api/order/admin/getOrders",config);
   
       dispatch({ type: ALL_ORDERS_SUCCESS, payload: data.orders });
     } catch (error) {

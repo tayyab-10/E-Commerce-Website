@@ -4,7 +4,8 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { addReviewReducer, ProductDetailreducer, Productreducer } from "./Reducers/productReducer";
 import { forgotPasswordReducer, ProfileReducer, userReducer } from "./Reducers/UserReducer";
 import { cartReducer } from "./Reducers/cartReducer";
-import { myOrdersReducer, newOrderReducer, orderDetailsReducer} from "./Reducers/orderReducer";
+import {myOrdersReducer, newOrderReducer, orderDetailsReducer} from "./Reducers/orderReducer";
+import { AdminProductreducer, allOrdersReducer, allUsersReducer, orderReducer } from "./Reducers/AdminReducers";
 
 const reducer = combineReducers({
     products: Productreducer,
@@ -16,7 +17,11 @@ const reducer = combineReducers({
     newOrder:newOrderReducer,
     myorders:myOrdersReducer,
     orderDetails:orderDetailsReducer,
-    addReview:addReviewReducer
+    addReview:addReviewReducer,
+    allOrders:allOrdersReducer,
+    // order: orderReducer,
+    allUsers: allUsersReducer,
+    adminproduct:AdminProductreducer
 });
 
 // Safe parsing function

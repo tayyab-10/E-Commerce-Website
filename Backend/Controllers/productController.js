@@ -60,6 +60,17 @@ exports.getsingleProduct=catchAsyncError(async(req,res,next)=>{
     })
   })
 
+  // Get all Products -- Adimin
+  exports.getAdminProducts = catchAsyncError(async (req, res, next) => {
+    const products = await Product.find();
+  
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  });
+  
+
 //update products -- Admin can update the product only
 
 exports.updateproduct=catchAsyncError(async(req,res)=>{
