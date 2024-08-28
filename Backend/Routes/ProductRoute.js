@@ -17,7 +17,9 @@ router.route("/getallproducts").get(isAuthenticatedUser,authorizeRoles("admin"),
 
 router.route("/product/:id").get(getsingleProduct);
 
-router.route("/review").post(isAuthenticatedUser,createProductReview).delete(isAuthenticatedUser,deleteReview);
+router.route("/review").post(isAuthenticatedUser,createProductReview)
+
+router.route("/deletereview").delete(isAuthenticatedUser,deleteReview);
 
 router.route("/getAllReviews").get(getProductReviews);
 
