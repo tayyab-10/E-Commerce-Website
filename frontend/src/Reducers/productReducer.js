@@ -1,7 +1,14 @@
 import {ALL_PRODUCT_FAIL,
      ALL_PRODUCT_REQUEST, 
      ALL_PRODUCT_SUCCESS,
+      ALL_REVIEW_FAIL,
+      ALL_REVIEW_REQUEST,
+      ALL_REVIEW_SUCCESS,
       CLEAR_ERRORS,
+    DELETE_REVIEW_FAIL,
+    DELETE_REVIEW_REQUEST,
+    DELETE_REVIEW_RESET,
+    DELETE_REVIEW_SUCCESS,
     NEW_REVIEW_FAIL,
     NEW_REVIEW_REQUEST,
     NEW_REVIEW_SUCCESS,
@@ -116,3 +123,66 @@ export const addReviewReducer = (state = {}, action) => {
             return state;
     }
 };
+
+export const productReviewsReducer = (state = { reviews: [] }, action) => {
+    switch (action.type) {
+      case ALL_REVIEW_REQUEST:
+        return {
+          ...state,
+          loading: true,
+        };
+      case ALL_REVIEW_SUCCESS:
+        return {
+          loading: false,
+          reviews: action.payload,
+        };
+      case ALL_REVIEW_FAIL:
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+  
+      case CLEAR_ERRORS:
+        return {
+          ...state,
+          error: null,
+        };
+      default:
+        return state;
+    }
+  };
+  
+  export const deletereviewReducer = (state = {}, action) => {
+    switch (action.type) {
+      case DELETE_REVIEW_REQUEST:
+        return {
+          ...state,
+          loading: true,
+        };
+      case DELETE_REVIEW_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          isDeleted: action.payload,
+        };
+      case DELETE_REVIEW_FAIL:
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+      case DELETE_REVIEW_RESET:
+        return {
+          ...state,
+          isDeleted: false,
+        };
+      case CLEAR_ERRORS:
+        return {
+          ...state,
+          error: null,
+        };
+      default:
+        return state;
+    }
+  };

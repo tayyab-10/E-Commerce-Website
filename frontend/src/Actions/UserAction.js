@@ -50,7 +50,7 @@ export const LoadUser=()=>async(dispatch) =>{
     dispatch({ type: LOAD_USER_REQUEST });
 
     const config = { withCredentials: true };   // if you are not getting token in the response
-    const { data } = await axios.get(`http://localhost:4000/api/auth/mydetail`,config);
+    const { data } = await axios.get(`http://localhost:4000/api/auth/userdetail`,config);
 
     dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });   //becasue there is a token in the response
   } catch (error) {

@@ -37,6 +37,9 @@ import NewProduct from './Components/Admin/NewProduct';
 import UpdateProduct from './Components/Admin/UpdateProduct';
 import OrderList from './Components/Admin/OrderList';
 import UpdateOrder from './Components/Admin/UpdateOrder';
+import UsersList from './Components/Admin/UsersList';
+import UpdateUser from './Components/Admin/UpdateUser';
+import ProductReviews from './Components/Admin/ProductReviews';
 
 function App() {
   const { isAuthenticated, user, loading } = useSelector((state) => state.User);
@@ -138,6 +141,19 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path='/admin/order/:id' element={<UpdateOrder />} />
         </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/admin/users' element={<UsersList />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/admin/updateUser/:id' element={<UpdateUser />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/admin/reviews' element={<ProductReviews />} />
+        </Route>
+
 
       </Routes>
       {stripeApiKey && (

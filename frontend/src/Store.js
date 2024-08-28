@@ -1,11 +1,11 @@
 import { legacy_createStore as createStore, combineReducers, applyMiddleware } from "redux";
 import {thunk} from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { addReviewReducer, ProductDetailreducer, Productreducer } from "./Reducers/productReducer";
+import { addReviewReducer, deletereviewReducer, ProductDetailreducer, Productreducer, productReviewsReducer } from "./Reducers/productReducer";
 import { forgotPasswordReducer, ProfileReducer, userReducer } from "./Reducers/UserReducer";
 import { cartReducer } from "./Reducers/cartReducer";
 import {myOrdersReducer, newOrderReducer, orderDetailsReducer,orderReducer} from "./Reducers/orderReducer";
-import { AdminProductreducer, allOrdersReducer, allUsersReducer, newProductReducer, productReducer } from "./Reducers/AdminReducers";
+import { AdminProductreducer, allOrdersReducer, allUsersReducer, newProductReducer, productReducer, userDetailsReducer, UserprofileReducer } from "./Reducers/AdminReducers";
 
 const reducer = combineReducers({
     products: Productreducer,
@@ -23,7 +23,11 @@ const reducer = combineReducers({
     allUsers: allUsersReducer,
     adminproduct:AdminProductreducer,
     createProduct:newProductReducer,
-    updatedeleteproduct:productReducer
+    updatedeleteproduct:productReducer,
+    UserProfile:UserprofileReducer,
+    UserDetails:userDetailsReducer,
+    GetReviews:productReviewsReducer,
+    deleteReviews:deletereviewReducer
 });
 
 // Safe parsing function

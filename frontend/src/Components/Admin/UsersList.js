@@ -1,4 +1,4 @@
-import React, {useEffect } from "react";
+import React, { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,24 +8,22 @@ import MetaData from "../Layout/MetaData";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SideBar from "./Sidebar";
-import { getAllUsers, clearErrors, deleteUser } from "../../Actions/UserAction";
+import { getAllUsers, clearErrors, deleteUser } from "../../Actions/AdminAction";
 import { DELETE_USER_RESET } from "../../Constants/userConstants";
 
 const UsersList = () => {
   const dispatch = useDispatch();
-  const navigate=useNavigate();
-
+  const navigate = useNavigate();
   const alert = useAlert();
 
   const { error, users } = useSelector((state) => state.allUsers);
-
   const { user } = useSelector((state) => state.User);
 
   const {
     error: deleteError,
     isDeleted,
     message,
-  } = useSelector((state) => state.profile);
+  } = useSelector((state) => state.UserProfile);
 
   const deleteUserHandler = (id) => {
     dispatch(deleteUser(id));
@@ -49,11 +47,10 @@ const UsersList = () => {
     }
 
     dispatch(getAllUsers());
-  }, [dispatch, alert, error, deleteError,isDeleted, message]);
+  }, [dispatch, alert, error, deleteError, isDeleted, message]);
 
   const columns = [
     { field: "id", headerName: "User ID", minWidth: 180, flex: 0.8 },
-
     {
       field: "email",
       headerName: "Email",
@@ -63,10 +60,9 @@ const UsersList = () => {
     {
       field: "name",
       headerName: "Name",
-      minWidth: 150,
+      minWidth: 150, 
       flex: 0.5,
     },
-
     {
       field: "role",
       headerName: "Role",
@@ -74,12 +70,11 @@ const UsersList = () => {
       minWidth: 150,
       flex: 0.3,
       cellClassName: (params) => {
-        return params.getValue(params.id, "role") === "admin"
+        return params.row.id === "admin"
           ? "greenColor"
           : "redColor";
       },
     },
-
     {
       field: "actions",
       flex: 0.3,
@@ -90,15 +85,10 @@ const UsersList = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={`/admin/user/${params.getValue(params.id, "id")}`}>
+            <Link to={`/admin/updateUser/${params.row.id}`}>
               <EditIcon />
             </Link>
-
-            <Button
-              onClick={() =>
-                deleteUserHandler(params.getValue(params.id, "id"))
-              }
-            >
+            <Button onClick={() => deleteUserHandler(params.row.id)}>
               <DeleteIcon />
             </Button>
           </>
@@ -122,18 +112,20 @@ const UsersList = () => {
   return (
     <>
       <MetaData title={`ALL USERS - ${user.name}`} />
-
-      <div className="dashboard">
+      
+      <div className="flex w-full">
         <SideBar />
-        <div className="productListContainer">
-          <h1 id="productListHeading">ALL USERS</h1>
+        <div className="w-full box-border bg-white border-l border-black/20 flex flex-col h-screen">
+          <h1 className="font-roboto font-normal text-2xl p-[0.5vmax] box-border text-black/70 transition-all duration-500 my-8 text-center">
+            ALL USERS
+          </h1>
 
           <DataGrid
             rows={rows}
             columns={columns}
             pageSize={10}
             disableSelectionOnClick
-            className="productListTable"
+            className="bg-white border-none"
             autoHeight
           />
         </div>

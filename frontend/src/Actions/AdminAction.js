@@ -25,7 +25,10 @@ export const getAllUsers = () => async (dispatch) => {
   export const getUserDetails = (id) => async (dispatch) => {
     try {
       dispatch({ type: USER_DETAILS_REQUEST });
-      const { data } = await axios.get(`/api/v1/admin/user/${id}`);
+      const config={
+          withCredentials:true
+      }
+      const { data } = await axios.get(`http://localhost:4000/api/auth/admin/getuser/${id}`,config);
   
       dispatch({ type: USER_DETAILS_SUCCESS, payload: data.user });
     } catch (error) {
@@ -38,10 +41,10 @@ export const getAllUsers = () => async (dispatch) => {
     try {
       dispatch({ type: UPDATE_USER_REQUEST });
   
-      const config = { headers: { "Content-Type": "application/json" } };
+      const config = { headers: { "Content-Type": "application/json" }, withCredentials:true};
   
       const { data } = await axios.put(
-        `/api/v1/admin/user/${id}`,
+        `http://localhost:4000/api/auth/admin/updateUser/${id}`,
         userData,
         config
       );
@@ -60,7 +63,10 @@ export const getAllUsers = () => async (dispatch) => {
     try {
       dispatch({ type: DELETE_USER_REQUEST });
   
-      const { data } = await axios.delete(`/api/v1/admin/user/${id}`);
+      const config={
+        withCredentials:true
+      }
+      const { data } = await axios.delete(`http://localhost:4000/api/auth/admin/deleteUser/${id}`,config);
   
       dispatch({ type: DELETE_USER_SUCCESS, payload: data });
     } catch (error) {

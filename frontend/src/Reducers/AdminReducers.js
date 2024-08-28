@@ -1,4 +1,4 @@
-import { ALL_USERS_REQUEST,ALL_USERS_SUCCESS,ALL_USERS_FAIL,CLEAR_ERRORS, USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_DETAILS_FAIL} from "../Constants/userConstants";
+import { ALL_USERS_REQUEST,ALL_USERS_SUCCESS,ALL_USERS_FAIL,CLEAR_ERRORS, USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_DETAILS_FAIL, UPDATE_PROFILE_REQUEST, UPDATE_PASSWORD_REQUEST, UPDATE_USER_REQUEST, DELETE_USER_REQUEST, UPDATE_PROFILE_SUCCESS, UPDATE_PASSWORD_SUCCESS, UPDATE_USER_SUCCESS, DELETE_USER_SUCCESS, UPDATE_PROFILE_FAIL, UPDATE_PASSWORD_FAIL, UPDATE_USER_FAIL, DELETE_USER_FAIL, UPDATE_PROFILE_RESET, UPDATE_PASSWORD_RESET, UPDATE_USER_RESET, DELETE_USER_RESET} from "../Constants/userConstants";
 import { ALL_ORDERS_FAIL, ALL_ORDERS_REQUEST, ALL_ORDERS_SUCCESS } from "../Constants/OrderConstants";
 import { ADMIN_PRODUCT_FAIL, ADMIN_PRODUCT_REQUEST, ADMIN_PRODUCT_SUCCESS, DELETE_PRODUCT_FAIL, DELETE_PRODUCT_REQUEST, DELETE_PRODUCT_RESET, DELETE_PRODUCT_SUCCESS, NEW_PRODUCT_FAIL, NEW_PRODUCT_REQUEST, NEW_PRODUCT_RESET, NEW_PRODUCT_SUCCESS, UPDATE_PRODUCT_FAIL, UPDATE_PRODUCT_REQUEST, UPDATE_PRODUCT_RESET, UPDATE_PRODUCT_SUCCESS } from "../Constants/ProductConstant";
 
@@ -34,7 +34,7 @@ export const AdminProductreducer = (state = {}, action) => {
     }
 };
 
-export const allUsersReducer = (state = { }, action) => {
+export const allUsersReducer = (state ={}, action) => {
     switch (action.type) {
       case ALL_USERS_REQUEST:
         return {
@@ -45,7 +45,7 @@ export const allUsersReducer = (state = { }, action) => {
         return {
           ...state,
           loading: false,
-          users: action.payload.users,
+          users: action.payload,
         };
   
       case ALL_USERS_FAIL:
@@ -211,3 +211,66 @@ export const allUsersReducer = (state = { }, action) => {
         return state;
     }
   };
+
+  export const UserprofileReducer = (state = {}, action) => {
+    switch (action.type) {
+      case UPDATE_PROFILE_REQUEST:
+      case UPDATE_PASSWORD_REQUEST:
+      case UPDATE_USER_REQUEST:
+      case DELETE_USER_REQUEST:
+        return {
+          ...state,
+          loading: true,
+        };
+      case UPDATE_PROFILE_SUCCESS:
+      case UPDATE_PASSWORD_SUCCESS:
+      case UPDATE_USER_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          isUpdated: action.payload,
+        };
+  
+      case DELETE_USER_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          isDeleted: action.payload.success,
+          message: action.payload.message,
+        };
+  
+      case UPDATE_PROFILE_FAIL:
+      case UPDATE_PASSWORD_FAIL:
+      case UPDATE_USER_FAIL:
+      case DELETE_USER_FAIL:
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+  
+      case UPDATE_PROFILE_RESET:
+      case UPDATE_PASSWORD_RESET:
+      case UPDATE_USER_RESET:
+        return {
+          ...state,
+          isUpdated: false,
+        };
+  
+      case DELETE_USER_RESET:
+        return {
+          ...state,
+          isDeleted: false,
+        };
+  
+      case CLEAR_ERRORS:
+        return {
+          ...state,
+          error: null,
+        };
+  
+      default:
+        return state;
+    }
+  };
+  
