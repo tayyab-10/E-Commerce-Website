@@ -5,11 +5,11 @@
   "main": "Backend/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd frontend && npm start",
-    "dev": "nodemon Backend/server.js",
+    "start": "node init && cd frontend && npm start",
+    "dev": "node init && nodemon Backend/server.js",
     "both": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
-    "start-frontend": "cd frontend && npm start",
-    "start-backend": "nodemon Backend/server.js"
+    "start-frontend": "node init && cd frontend && npm start",
+    "start-backend": "node init && nodemon Backend/server.js"
   },
   "proxy": "http://localhost:4000",
   "author": "",
